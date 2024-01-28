@@ -1,30 +1,22 @@
 ---
-# tasks file for lighthouse-role
-- name: Install EPEL Repo
-  yum:
-    name=epel-release
-    state=present
+# tasks file for vector-role
+- block:
+    - name: Get vector distrib
+      ansible.builtin.get_url:
+        url: "https://packages.timber.io/vector/{{ vector_version }}/vector-{{ vector_version }}-1.{{ ansible_architecture }}.rpm"
+        dest: "/home/centos/vector-{{ vector_version }}.rpm"
 
-- name: Install nginx
-  yum:
-    name=nginx
-  notify:
-    - nginx systemd
+- name: Install Vector packages
+  become: true
+  ansible.builtin.yum:
+    name:
+      - vector-{{ vector_version }}.rpm
 
-- name: Install git
-  yum:
-    name=git
-
-- name: write config with jinja2
+- name: write using jinja2
   ansible.builtin.template:
-     src: nginx.conf.j2
+     src: vector.yaml.j2
      mode: 0644
-     dest: /etc/nginx/nginx.conf
-     owner: nginx
-     group: nginx
-  notify:
-    - nginx systemd
-- name: Clone repo
-  ansible.builtin.git:
-     repo: https://github.com/VKCOM/lighthouse.git
-     dest: /usr/share/nginx/index
+     dest: "{{ vector_dir }}/vector.yaml"
+     owner: "{{ vector_os_user }}"
+     group: "{{ vector_os_group }}"
+  notify: Start vector service
