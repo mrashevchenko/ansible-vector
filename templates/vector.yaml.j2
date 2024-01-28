@@ -1,0 +1,19 @@
+# Change this to use a non-default directory for Vector data storage:
+data_dir: {{ data_dir }}
+
+sources:
+  dummy_logs:
+    type: "demo_logs"
+    format: "syslog"
+    interval: 1
+
+sinks:
+  my_sink_id:
+    type: clickhouse
+    inputs:
+      - dummy_logs
+    endpoint: "{{endpoint}}"
+    database: "{{ database }}"
+    table: "{{ table }}"
+    healthcheck:
+      enabled: false
