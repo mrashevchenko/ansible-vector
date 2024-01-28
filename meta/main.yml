@@ -40,7 +40,7 @@ galaxy_info:
   #   - 99.99
 
   galaxy_tags:
-    - lighthouse
+   - vector
 
 dependencies: []
   # List your role dependencies here, one per line. Be sure to remove the '[]' above,
