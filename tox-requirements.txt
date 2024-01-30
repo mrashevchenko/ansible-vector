@@ -1,0 +1,7 @@
+selinux
+ansible-lint==6.17.2
+yamllint==1.32.0
+lxml
+molecule==5.1.0
+molecule_podman
+jmespath
